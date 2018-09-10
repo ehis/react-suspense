@@ -1,23 +1,164 @@
 import { Head } from 'mdx-deck'
+import { Notes } from 'mdx-deck'
+import { Image } from 'mdx-deck'
+import { Appear } from 'mdx-deck'
+import { FullScreenCode } from 'mdx-deck/layouts'
+import { Split, Invert } from 'mdx-deck/layouts'
 
 export { default as theme } from './theme'
 
 <Head>
-  <title>Presentation Title</title>
+  <title>React Suspense</title>
 </Head>
 
-# Hello
+# Hiii!!!
+
+![waving corgi](images/waving-corgi.gif)
+---
+
+## Ehis Ojielu
+
+#### Twitter: @ehiszy
+#### Github: ehis
+
+```notes
+  - Introduce yourself 
+  - Slides available on github
+  - Follow me on Twitter or Github 😉
+```
+---
+
+## It's an _async_ world 🌍
 
 ---
 
-## Edit this file
+- We want to load faster
+- We want to load less
+- We want to prioritize important content
 
-To create your presentation
+---
 
-```notes
-- Create speaker notes in fenced code blocks
+## Code Splitting
+
+---
+
+export default Invert
+
+```js
+ entry: {...},
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          name: 'common',
+          minChunks: 2
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          priority: 10,
+          enforce: true
+        }
+      }
+    }
+  }
+  
+```
+---
+
+export default Invert
+
+```jsx
+
+import Loadable from 'react-loadable';
+
+const LoadableOtherComponent = Loadable({
+  loader: () => import('./OtherComponent'),
+  loading: () => <div>Loading...</div>,
+});
+
+const MyComponent = () => (
+  <LoadableOtherComponent/>
+);
+
+```
+---
+
+- Wait until data is ready
+- Using loading spinners or placeholders
+
+---
+
+export default Invert
+
+```jsx
+<Async action={fetchUsers}>
+  {
+    (isLoading, result) => isLoading
+       ? <Placeholder />
+       : <ListView list={result} />
+  }
+</Async>
 ```
 
 ---
 
-<https://github.com/jxnblk/mdx-deck>
+<Image src="images/instagram-loading.png" size="auto 80%"/>
+
+```notes
+- Loading spinner hell...
+```
+---
+
+## React Suspense 
+
+![mj-popcorn 🍿](images/mj-popcorn.gif)
+
+---
+## How ??? 
+<div>
+  <Appear>
+    <p>Defer rendering part of the component tree</p>
+    <p>Start rendering even before the data has loaded</p>
+    <p>On a fast network, delay DOM mutations until the entire tree is complete</p>
+    <p>On a slow network, precisely control loading states</p>
+  </Appear>
+</div>
+
+```notes
+- What is React Suspense
+  - Suspend rendering while waiting for async data
+- Why to care to about react-suspense
+  - Intentional loading states while building your apps
+- You might not have this problem with graphql
+
+```
+---
+
+ ### simple-cache-provider
+
+ - createResource()
+ - createCache()
+ - read()
+ - preload()
+
+---
+
+Demo
+
+```notes
+ - React suspense starter kit
+ - Fast network should not show loading spinner
+ - Slow network should show loading spinner
+ - Waterfall request and preload
+ - Strict mode in v16.3 to prepare for async react
+```
+---
+
+"These _async_ delights have _async_ ends"
+
+---
+
+https://github.com/ehis/react-suspense
